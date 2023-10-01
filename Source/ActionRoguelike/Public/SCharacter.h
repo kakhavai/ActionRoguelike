@@ -38,6 +38,8 @@ protected:
 
 	void MoveRight(float Value);
 
+	void Jump();
+	
 	void PrimaryAttack();
 
 public:	

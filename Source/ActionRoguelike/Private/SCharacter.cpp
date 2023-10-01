@@ -23,6 +23,8 @@ ASCharacter::ASCharacter()
 
 	bUseControllerRotationYaw = false;
 
+	GetCharacterMovement()->JumpZVelocity = 720.0f;
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	
 }
@@ -46,6 +48,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ASCharacter::MoveRight);
 
@@ -53,6 +56,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("Lookup", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
+
 
 }
 
@@ -80,6 +85,11 @@ void ASCharacter::MoveRight(const float Value)
 	
 	
 	AddMovementInput(RightVector, Value);
+}
+
+void ASCharacter::Jump()
+{
+	Super::Jump();
 }
 
 void ASCharacter::PrimaryAttack()
