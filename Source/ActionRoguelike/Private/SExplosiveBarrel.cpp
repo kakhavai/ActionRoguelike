@@ -20,11 +20,20 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 	ForceComp->SetupAttachment(RootComponent);
 
 	ForceComp->bImpulseVelChange = true;
+	ForceComp->ImpulseStrength = 500.0f;
 	ForceComp->Radius = 1000.0f;
 	
-	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::Explode);
 
 }
+
+void ASExplosiveBarrel::PostInitializeComponents()
+{
+	// Don't forget to call parent function
+	Super::PostInitializeComponents();
+
+	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::Explode);
+}
+
 
 
 void ASExplosiveBarrel::Explode(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
