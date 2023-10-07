@@ -32,7 +32,14 @@ ASMagicProjectile::ASMagicProjectile()
 void ASMagicProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetWorldTimerManager().SetTimer(TimerHandle_Projectile, this, &ASMagicProjectile::QuickDestroy, 5.0f);
 	
+}
+
+void ASMagicProjectile::QuickDestroy()
+{
+	this->Destroy();
 }
 
 // Called every frame

@@ -19,7 +19,7 @@ public:
 	void PostInitializeComponents();
 
 protected:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* MeshComp;
 
 	UPROPERTY(VisibleAnywhere)
