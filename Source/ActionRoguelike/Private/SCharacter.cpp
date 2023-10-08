@@ -59,7 +59,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("Lookup", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
 
@@ -90,11 +90,6 @@ void ASCharacter::MoveRight(const float Value)
 	
 	
 	AddMovementInput(RightVector, Value);
-}
-
-void ASCharacter::Jump()
-{
-	Super::Jump();
 }
 
 void ASCharacter::PrimaryAttack_TimeElapsed()
