@@ -19,6 +19,7 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 	ForceComp = CreateDefaultSubobject<URadialForceComponent>("ForceComp");
 	ForceComp->SetupAttachment(RootComponent);
 
+	ForceComp->SetAutoActivate(false);
 	ForceComp->bImpulseVelChange = true;
 	ForceComp->ImpulseStrength = 500.0f;
 	ForceComp->Radius = 1000.0f;
@@ -30,17 +31,32 @@ void ASExplosiveBarrel::PostInitializeComponents()
 {
 	// Don't forget to call parent function
 	Super::PostInitializeComponents();
+	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnActorHit);
 
-	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::Explode);
 }
 
 
-
-void ASExplosiveBarrel::Explode(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-                                FVector NormalImpulse, const FHitResult& Hit)
+void ASExplosiveBarrel::Explode()
 {
 	ForceComp->FireImpulse();
 }
+
+void ASExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+
+	Explode();
+	
+	UE_LOG(LogTemp, Log, TEXT("OnActorHit in Explosive Barrel"));
+	UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s, at game time: %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
+
+
+	const FString CombinedString = FString::Printf(TEXT("Hit at location: %s"), *Hit.ImpactPoint.ToString());
+	
+	DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green,2.0f, true);
+	
+}
+
 
 // Called when the game starts or when spawned
 void ASExplosiveBarrel::BeginPlay()

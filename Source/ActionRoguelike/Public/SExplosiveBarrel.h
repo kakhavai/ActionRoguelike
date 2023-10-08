@@ -27,8 +27,10 @@ protected:
 	
 
 	UFUNCTION(BlueprintCallable)
-	void Explode(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
+	UFUNCTION(BlueprintCallable)
+	void Explode();
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
