@@ -50,10 +50,12 @@ protected:
 	void MoveForward(float Value);
 
 	void MoveRight(float Value);
-	void BlackholeAttack_TimeElapsed();
-	void BlackholeAttack();
+	void FireProjectile(TSubclassOf<AActor> ActorClass);
 
-	void PrimaryAttack_TimeElapsed();
+	UFUNCTION()
+	void FireProjectile_TimeElapsed(TSubclassOf<AActor> ActorClass);
+	
+	void BlackholeAttack();
 	
 	void PrimaryAttack();
 
