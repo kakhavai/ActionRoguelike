@@ -38,6 +38,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack");
 	TSubclassOf<AActor> ProjectileClass;
 
+	UPROPERTY(EditAnywhere, Category = "Attack");
+	TSubclassOf<AActor> BlackholeProjectileClass;
+
 	UPROPERTY(VisibleAnywhere)
 	USInteractionComponent* InteractionComp;
 	
@@ -47,7 +50,9 @@ protected:
 	void MoveForward(float Value);
 
 	void MoveRight(float Value);
-	
+	void BlackholeAttack_TimeElapsed();
+	void BlackholeAttack();
+
 	void PrimaryAttack_TimeElapsed();
 	
 	void PrimaryAttack();
