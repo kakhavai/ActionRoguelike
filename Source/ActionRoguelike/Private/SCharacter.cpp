@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "SInteractionComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 // Sets default values
@@ -95,7 +96,33 @@ void ASCharacter::MoveRight(const float Value)
 void ASCharacter::PrimaryAttack_TimeElapsed()
 {
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-	FTransform SpawnTM = FTransform(GetControlRotation(),HandLocation);
+
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this); // Ignore this actor during the trace
+	
+	FHitResult OutHit;
+
+	float Radius = 30.0f;
+
+
+		
+	// Perform the line trace
+	// The ECollisionChannel::ECC_Visibility means it will trace against any object that is visible
+
+	FVector EndLocation = CameraComp->GetComponentLocation() + (CameraComp->GetForwardVector()) * 5000;
+	
+	bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, CameraComp->GetComponentLocation(), EndLocation, ECollisionChannel::ECC_Visibility, CollisionParams);
+	
+
+	DrawDebugLine(GetWorld(), CameraComp->GetComponentLocation(), EndLocation, FColor::Orange, false, 2.0f, 0, 2.0f);
+
+	DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, Radius, 32, FColor::Orange, false, 2.0f);
+
+
+	FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, bHit ? OutHit.ImpactPoint : OutHit.TraceEnd);
+
+	
+	FTransform SpawnTM = FTransform(LookAtRotation,HandLocation);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Instigator = this;
