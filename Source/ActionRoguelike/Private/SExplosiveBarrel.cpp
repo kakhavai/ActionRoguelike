@@ -27,11 +27,25 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 
 }
 
+void ASExplosiveBarrel::OnActorHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	Explode();
+	
+	UE_LOG(LogTemp, Log, TEXT("OnActorHit in Explosive Barrel"));
+	UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s, at game time: %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
+
+
+	const FString CombinedString = FString::Printf(TEXT("Hit at location: %s"), *SweepResult.ImpactPoint.ToString());
+	
+	DrawDebugString(GetWorld(), SweepResult.ImpactPoint, CombinedString, nullptr, FColor::Green,2.0f, true);
+}
+
 void ASExplosiveBarrel::PostInitializeComponents()
 {
 	// Don't forget to call parent function
 	Super::PostInitializeComponents();
-	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnActorHit);
+	MeshComp->OnComponentBeginOverlap.AddDynamic(this, &ASExplosiveBarrel::OnActorHit);
 
 }
 
@@ -41,21 +55,7 @@ void ASExplosiveBarrel::Explode()
 	ForceComp->FireImpulse();
 }
 
-void ASExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
 
-	Explode();
-	
-	UE_LOG(LogTemp, Log, TEXT("OnActorHit in Explosive Barrel"));
-	UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s, at game time: %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
-
-
-	const FString CombinedString = FString::Printf(TEXT("Hit at location: %s"), *Hit.ImpactPoint.ToString());
-	
-	DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green,2.0f, true);
-	
-}
 
 
 // Called when the game starts or when spawned
