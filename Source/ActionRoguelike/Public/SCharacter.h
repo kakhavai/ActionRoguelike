@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SAttackComponent.h"
 #include "SInteractionComponent.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
@@ -27,22 +28,14 @@ protected:
 	UPROPERTY(VisibleAnywhere);
 	USpringArmComponent* SpringArmComp;
 	
-	FTimerHandle TimerHandle_PrimaryAttack;
-
 	UPROPERTY(VisibleAnywhere);
 	UCameraComponent* CameraComp;
-
-	UPROPERTY(EditAnywhere, Category = "Attack");
-	UAnimMontage* AttackAnim;
-
-	UPROPERTY(EditAnywhere, Category = "Attack");
-	TSubclassOf<AActor> ProjectileClass;
-
-	UPROPERTY(EditAnywhere, Category = "Attack");
-	TSubclassOf<AActor> BlackholeProjectileClass;
-
+	
 	UPROPERTY(VisibleAnywhere)
 	USInteractionComponent* InteractionComp;
+
+	UPROPERTY(VisibleAnywhere)
+	USAttackComponent* AttackComp;	
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -50,16 +43,12 @@ protected:
 	void MoveForward(float Value);
 
 	void MoveRight(float Value);
-	void FireProjectile(TSubclassOf<AActor> ActorClass);
-
-	UFUNCTION()
-	void FireProjectile_TimeElapsed(TSubclassOf<AActor> ActorClass);
-	
-	void BlackholeAttack();
-	
-	void PrimaryAttack();
 
 	void PrimaryInteract();
+
+	void PrimaryAttack();
+
+	void BlackholeAttack();
 
 public:	
 	// Called every frame
@@ -68,4 +57,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+	UCameraComponent* GetCameraComp();
 };

@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "SInteractionComponent.h"
+#include "SAttackComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
@@ -24,6 +25,8 @@ ASCharacter::ASCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>("InteractionComp");
+
+	AttackComp = CreateDefaultSubobject<USAttackComponent>("AttackComp");
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->JumpZVelocity = 720.0f;
@@ -85,57 +88,6 @@ void ASCharacter::MoveRight(const float Value)
 	AddMovementInput(RightVector, Value);
 }
 
-
-void ASCharacter::FireProjectile(TSubclassOf<AActor> ActorClass)
-{
-	PlayAnimMontage(AttackAnim);
-
-	FTimerDelegate Delegate;
-	Delegate.BindUFunction(this, "FireProjectile_TimeElapsed", ActorClass);
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, Delegate, .2, false);
-	
-	//GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
-}
-
-void ASCharacter::FireProjectile_TimeElapsed(TSubclassOf<AActor> ActorClass)
-{
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-	
-	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(this); // Ignore this actor during the trace
-	FHitResult OutHit;
-	float Radius = 30.0f;
-	
-	// Perform the line trace
-	// The ECollisionChannel::ECC_Visibility means it will trace against any object that is visible
-	FVector EndLocation = CameraComp->GetComponentLocation() + (CameraComp->GetForwardVector()) * 5000;
-	bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, CameraComp->GetComponentLocation(), EndLocation,
-													 ECollisionChannel::ECC_Visibility, CollisionParams);
-	
-	DrawDebugLine(GetWorld(), CameraComp->GetComponentLocation(), EndLocation, FColor::Orange, false, 2.0f, 0, 2.0f);
-	DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, Radius, 32, FColor::Orange, false, 2.0f);
-	
-	FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation,
-																	 bHit ? OutHit.ImpactPoint : OutHit.TraceEnd);
-	FTransform SpawnTM = FTransform(LookAtRotation, HandLocation);
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Instigator = this;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	GetWorld()->SpawnActor<AActor>(ActorClass, SpawnTM, SpawnParams);
-}
-
-void ASCharacter::BlackholeAttack()
-{
-	FireProjectile(BlackholeProjectileClass);
-}
-
-void ASCharacter::PrimaryAttack()
-{
-	FireProjectile(ProjectileClass);
-}
-
 void ASCharacter::PrimaryInteract()
 {
 	if (InteractionComp)
@@ -143,3 +95,27 @@ void ASCharacter::PrimaryInteract()
 		InteractionComp->PrimaryInteract();
 	}
 }
+
+void ASCharacter::PrimaryAttack()
+{
+	if(AttackComp)
+	{
+		AttackComp->PrimaryAttack();
+	}
+}
+
+void ASCharacter::BlackholeAttack()
+{
+	if(AttackComp)
+	{
+		AttackComp->BlackholeAttack();
+	}
+}
+
+
+UCameraComponent* ASCharacter::GetCameraComp()
+{
+	return CameraComp;
+}
+
+
