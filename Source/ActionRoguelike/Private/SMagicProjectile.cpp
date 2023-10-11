@@ -15,6 +15,8 @@ ASMagicProjectile::ASMagicProjectile()
 	// SphereComp->SetCollisionObjectType(ECC_WorldDynamic);
 	
 	SphereComp->SetCollisionProfileName("Projectile");
+	SphereComp->SetGenerateOverlapEvents(true);
+	
 	
 	RootComponent = SphereComp;
 
@@ -25,6 +27,7 @@ ASMagicProjectile::ASMagicProjectile()
 	MovementComp->InitialSpeed = 1000.0f;
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
+	
 
 }
 

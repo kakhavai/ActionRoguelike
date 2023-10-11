@@ -95,3 +95,9 @@ void USAttackComponent::PrimaryAttack()
 {
 	FireProjectile(ProjectileClass);
 }
+
+
+void USAttackComponent::TeleportAttack()
+{
+	FireProjectile(TeleportProjectileClass);
+}

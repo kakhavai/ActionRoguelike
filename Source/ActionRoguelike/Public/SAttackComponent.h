@@ -20,6 +20,8 @@ public:
 	
 	void PrimaryAttack();
 
+	void TeleportAttack();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -34,6 +36,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Attack");
 	TSubclassOf<AActor> BlackholeProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Attack");
+	TSubclassOf<AActor> TeleportProjectileClass;
 	
 	void FireProjectile(TSubclassOf<AActor> ActorClass);
 

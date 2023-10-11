@@ -50,6 +50,9 @@ protected:
 
 	void BlackholeAttack();
 
+	void TeleportAttack();
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
