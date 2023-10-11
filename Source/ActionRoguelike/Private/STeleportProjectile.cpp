@@ -4,6 +4,7 @@
 #include "STeleportProjectile.h"
 
 #include "SCharacter.h"
+#include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 ASTeleportProjectile::ASTeleportProjectile()
@@ -23,8 +24,21 @@ void ASTeleportProjectile::BeginPlay()
 void ASTeleportProjectile::QuickDestroy()
 {
 	FRotator SpawnRotation = FRotator(0.f, 0.f, 0.f);
+	TeleportLocation = this->GetActorLocation();
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TeleportDisband, this->GetActorLocation(), SpawnRotation, true);
 	this->Destroy();
+}
+
+void ASTeleportProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	if(EndPlayReason == EEndPlayReason::Destroyed)
+	{
+		ASCharacter* Player = Cast<ASCharacter>(GetInstigator());
+
+		Player->TeleportTo(TeleportLocation, Player->GetCameraComp()->GetComponentRotation());
+	}
 }
 
 

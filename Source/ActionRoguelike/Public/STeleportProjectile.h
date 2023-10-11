@@ -19,8 +19,8 @@ public:
 	ASTeleportProjectile();
 
 	virtual void BeginPlay() override;
-
 	virtual void QuickDestroy() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	UParticleSystem* TeleportDisband;
@@ -28,5 +28,8 @@ public:
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+private:
+	FVector TeleportLocation;
 
 };
