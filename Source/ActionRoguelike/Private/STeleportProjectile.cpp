@@ -17,16 +17,19 @@ void ASTeleportProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorldTimerManager().SetTimer(TimerHandle_Projectile, this, &ASTeleportProjectile::QuickDestroy, 2.0f);
+	GetWorldTimerManager().SetTimer(TimerHandle_StageTeleport, this, &ASTeleportProjectile::StageTeleportAndDestroy, 2.0f);
 	
 }
 
-void ASTeleportProjectile::QuickDestroy()
+void ASTeleportProjectile::StageTeleportAndDestroy()
 {
-	FRotator SpawnRotation = FRotator(0.f, 0.f, 0.f);
+	GetWorldTimerManager().ClearTimer(TimerHandle_StageTeleport);
+	const FRotator SpawnRotation = FRotator(0.f, 0.f, 0.f);
 	TeleportLocation = this->GetActorLocation();
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TeleportDisband, this->GetActorLocation(), SpawnRotation, true);
-	this->Destroy();
+	SetActorHiddenInGame(true);
+	
+	GetWorldTimerManager().SetTimer(TimerHandle_TeleportAndDestroy, this, &ASTeleportProjectile::TeleportAndDestroy, 2.0f);
 }
 
 void ASTeleportProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -35,18 +38,35 @@ void ASTeleportProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 	if(EndPlayReason == EEndPlayReason::Destroyed)
 	{
-		ASCharacter* Player = Cast<ASCharacter>(GetInstigator());
+		GetWorldTimerManager().ClearTimer(TimerHandle_StageTeleport);
+		GetWorldTimerManager().ClearTimer(TimerHandle_TeleportAndDestroy);
 
-		Player->TeleportTo(TeleportLocation, Player->GetCameraComp()->GetComponentRotation());
 	}
 }
+
+
 
 
 void ASTeleportProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ASCharacter* Player = Cast<ASCharacter>(OtherActor);
+	UE_LOG(LogTemp, Warning, TEXT("ASBlackholeProjectile::OnOverlapBegin!"));
+
 	if(!Player)
 	{
-		QuickDestroy();
+		SetActorEnableCollision(false);
+		StageTeleportAndDestroy();
 	}
+}
+
+void ASTeleportProjectile::TeleportAndDestroy()
+{
+	UE_LOG(LogTemp, Log, TEXT("ASBlackholeProjectile::TeleportPlayer instantiated"));
+	ASCharacter* Player = Cast<ASCharacter>(GetInstigator());
+	bool checkPorted = Player->TeleportTo(TeleportLocation, Player->GetCameraComp()->GetComponentRotation());
+	if(!checkPorted)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ASBlackholeProjectile::TeleportAndDestroy Failed to find safe landing!"));
+	}
+	this->Destroy();
 }
