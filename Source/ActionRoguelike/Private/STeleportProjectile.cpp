@@ -17,7 +17,7 @@ void ASTeleportProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorldTimerManager().SetTimer(TimerHandle_StageTeleport, this, &ASTeleportProjectile::StageTeleportAndDestroy, 2.0f);
+	GetWorldTimerManager().SetTimer(TimerHandle_StageTeleport, this, &ASTeleportProjectile::StageTeleportAndDestroy, 1.0f);
 	
 }
 
@@ -29,7 +29,7 @@ void ASTeleportProjectile::StageTeleportAndDestroy()
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), TeleportDisband, this->GetActorLocation(), SpawnRotation, true);
 	SetActorHiddenInGame(true);
 	
-	GetWorldTimerManager().SetTimer(TimerHandle_TeleportAndDestroy, this, &ASTeleportProjectile::TeleportAndDestroy, 2.0f);
+	GetWorldTimerManager().SetTimer(TimerHandle_TeleportAndDestroy, this, &ASTeleportProjectile::TeleportAndDestroy, .2);
 }
 
 void ASTeleportProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)

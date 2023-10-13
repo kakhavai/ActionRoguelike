@@ -91,7 +91,7 @@ void ASCharacter::MoveRight(const float Value)
 
 void ASCharacter::PrimaryInteract()
 {
-	if (InteractionComp)
+	if (ensure(InteractionComp))
 	{
 		InteractionComp->PrimaryInteract();
 	}
@@ -99,7 +99,7 @@ void ASCharacter::PrimaryInteract()
 
 void ASCharacter::PrimaryAttack()
 {
-	if(AttackComp)
+	if(ensure(AttackComp))
 	{
 		AttackComp->PrimaryAttack();
 	}
@@ -107,7 +107,7 @@ void ASCharacter::PrimaryAttack()
 
 void ASCharacter::BlackholeAttack()
 {
-	if(AttackComp)
+	if(ensure(AttackComp))
 	{
 		AttackComp->BlackholeAttack();
 	}
@@ -115,7 +115,7 @@ void ASCharacter::BlackholeAttack()
 
 void ASCharacter::TeleportAttack()
 {
-	if(AttackComp)
+	if(ensure(AttackComp))
 	{
 		AttackComp->TeleportAttack();
 	}

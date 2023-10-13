@@ -40,7 +40,7 @@ void USAttackComponent::FireProjectile(TSubclassOf<AActor> ActorClass)
 {
 	ASCharacter* MyOwner = Cast<ASCharacter>(GetOwner());
 
-	if(MyOwner)
+	if(ensure(MyOwner))
 	{
 		MyOwner->PlayAnimMontage(AttackAnim);
 		FTimerDelegate Delegate;
@@ -55,7 +55,7 @@ void USAttackComponent::FireProjectile_TimeElapsed(TSubclassOf<AActor> ActorClas
 {
 	ASCharacter* MyOwner = Cast<ASCharacter>(GetOwner());
 
-	if(MyOwner)
+	if(ensure(MyOwner))
 	{
 		FVector HandLocation = MyOwner->GetMesh()->GetSocketLocation("Muzzle_01");
 	
@@ -70,8 +70,8 @@ void USAttackComponent::FireProjectile_TimeElapsed(TSubclassOf<AActor> ActorClas
 		bool bHit = GetWorld()->LineTraceSingleByChannel(OutHit, MyOwner->GetCameraComp()->GetComponentLocation(), EndLocation,
 														 ECollisionChannel::ECC_Visibility, CollisionParams);
 	
-		DrawDebugLine(GetWorld(), MyOwner->GetCameraComp()->GetComponentLocation(), EndLocation, FColor::Orange, false, 2.0f, 0, 2.0f);
-		DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, Radius, 32, FColor::Orange, false, 2.0f);
+		// DrawDebugLine(GetWorld(), MyOwner->GetCameraComp()->GetComponentLocation(), EndLocation, FColor::Orange, false, 2.0f, 0, 2.0f);
+		// DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, Radius, 32, FColor::Orange, false, 2.0f);
 	
 		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation,
 																		 bHit ? OutHit.ImpactPoint : OutHit.TraceEnd);
