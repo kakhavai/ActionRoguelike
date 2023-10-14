@@ -20,7 +20,7 @@ public:
 	bool ApplyHealthChange(float Delta);
 
 	UPROPERTY(BlueprintAssignable)
-	FOnHealthChanged FOnHealthChanged;
+	FOnHealthChanged OnHealthChanged;
 
 	
 	
