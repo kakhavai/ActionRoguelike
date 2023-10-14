@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SAttackComponent.h"
+#include "SAttributeComponent.h"
 #include "SInteractionComponent.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
@@ -35,7 +36,10 @@ protected:
 	USInteractionComponent* InteractionComp;
 
 	UPROPERTY(VisibleAnywhere)
-	USAttackComponent* AttackComp;	
+	USAttackComponent* AttackComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USAttributeComponent* AttributeComp;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -8,7 +8,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "SInteractionComponent.h"
 #include "SAttackComponent.h"
-#include "Kismet/KismetMathLibrary.h"
 
 
 // Sets default values
@@ -27,6 +26,8 @@ ASCharacter::ASCharacter()
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>("InteractionComp");
 
 	AttackComp = CreateDefaultSubobject<USAttackComponent>("AttackComp");
+
+	AttributeComp = CreateDefaultSubobject<USAttributeComponent>("AttributeComp");
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->JumpZVelocity = 720.0f;
@@ -68,8 +69,7 @@ void ASCharacter::MoveForward(const float Value)
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
 	ControlRot.Roll = 0.0f;
-
-
+	
 	AddMovementInput(ControlRot.Vector(), Value);
 }
 
