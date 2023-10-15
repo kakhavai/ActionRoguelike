@@ -21,8 +21,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
-
-	
 	
 	
 protected:

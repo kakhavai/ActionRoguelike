@@ -4,6 +4,7 @@
 #include "SMagicProjectile.h"
 
 #include "SAttributeComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 
 void ASMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -15,10 +16,17 @@ void ASMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 		if(AttributeComp)
 		{
 			AttributeComp->ApplyHealthChange(-5.0f);
-
-			Destroy();
+			QuickDestroy();
+		} else
+		{
+			QuickDestroy();
 		}
 	}
+}
+
+void ASMagicProjectile::UnbindActorOverlap()
+{
+	SphereComp->OnComponentBeginOverlap.RemoveDynamic(this, &ASMagicProjectile::OnActorOverlap);
 }
 
 // Sets default values
@@ -58,6 +66,8 @@ void ASMagicProjectile::BeginPlay()
 
 void ASMagicProjectile::QuickDestroy()
 {
+	UE_LOG(LogTemp, Warning, TEXT("OASMagicProjectile::QuickDestroy()"));
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleVfx, this->GetActorLocation(), EffectComp->GetComponentRotation(), true);
 	this->Destroy();
 }
 

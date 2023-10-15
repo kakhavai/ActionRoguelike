@@ -14,8 +14,6 @@ class ACTIONROGUELIKE_API ASMagicProjectile : public AActor
 	GENERATED_BODY()
 
 public:
-	UFUNCTION()
-	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	// Sets default values for this actor's properties
 	ASMagicProjectile();
 
@@ -29,15 +27,26 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UParticleSystemComponent* EffectComp;
 
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	UParticleSystem* ParticleVfx;
+	
 	FTimerHandle TimerHandle_Projectile;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	virtual void QuickDestroy();
+
+	UFUNCTION()
+	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void UnbindActorOverlap();
 	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
 
 };

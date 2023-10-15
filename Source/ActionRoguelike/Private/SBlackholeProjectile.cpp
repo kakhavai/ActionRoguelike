@@ -8,5 +8,6 @@ ASBlackholeProjectile::ASBlackholeProjectile()
 	// Your initialization code here...
 
 	UE_LOG(LogTemp, Log, TEXT("ASBlackholeProjectile::ASBlackholeProjectile instantiated"));
+	UnbindActorOverlap();
 
 }
