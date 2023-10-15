@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Sound/SoundCue.h"
 #include "SMagicProjectile.generated.h"
 
 UCLASS()
@@ -29,6 +30,15 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	UParticleSystem* ParticleVfx;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	UAudioComponent* AudioComp;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundCue* FlightSound;
+
+	UPROPERTY(EditAnywhere, Category = "Audio")
+	USoundCue* ImpactSound;
 	
 	FTimerHandle TimerHandle_Projectile;
 	
