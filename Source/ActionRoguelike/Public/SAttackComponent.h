@@ -30,6 +30,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Attack");
 	UAnimMontage* AttackAnim;
+	
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	UParticleSystem* MuzzleVfx;
 
 	UPROPERTY(EditAnywhere, Category = "Attack");
 	TSubclassOf<AActor> ProjectileClass;

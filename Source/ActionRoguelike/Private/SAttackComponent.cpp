@@ -6,6 +6,7 @@
 #include "SCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values for this component's properties
@@ -80,6 +81,8 @@ void USAttackComponent::FireProjectile_TimeElapsed(TSubclassOf<AActor> ActorClas
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Instigator = MyOwner;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleVfx, HandLocation, LookAtRotation, true);
 
 		GetWorld()->SpawnActor<AActor>(ActorClass, SpawnTM, SpawnParams);
 	}

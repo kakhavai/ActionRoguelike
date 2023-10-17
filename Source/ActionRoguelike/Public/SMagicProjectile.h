@@ -30,7 +30,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	UParticleSystem* ParticleVfx;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Audio")
 	UAudioComponent* AudioComp;
 
