@@ -7,11 +7,13 @@
 USAttributeComponent::USAttributeComponent()
 {
 	Health = 100;
+	MaxHealth= 100;
 }
 
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
 	Health += Delta;
+	Health = FMath::Clamp(Health, 0.0f, MaxHealth);
 	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
 	return true;
 }

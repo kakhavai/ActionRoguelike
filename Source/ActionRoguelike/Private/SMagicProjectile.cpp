@@ -37,6 +37,8 @@ ASMagicProjectile::ASMagicProjectile()
 	AudioComp->SetupAttachment(RootComponent);
 	AudioComp->bAutoActivate = false;
 
+	DamageValue = -5.0f;
+
 	
 }
 
@@ -66,7 +68,7 @@ void ASMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
 		if(AttributeComp)
 		{
-			AttributeComp->ApplyHealthChange(-5.0f);
+			AttributeComp->ApplyHealthChange(DamageValue);
 		}
 
 		QuickDestroy();

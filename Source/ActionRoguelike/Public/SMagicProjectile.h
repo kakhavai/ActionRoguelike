@@ -39,6 +39,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Audio")
 	USoundCue* ImpactSound;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float DamageValue;
 	
 	FTimerHandle TimerHandle_Projectile;
 	
