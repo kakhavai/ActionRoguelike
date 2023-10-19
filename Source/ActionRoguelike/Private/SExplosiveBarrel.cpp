@@ -2,6 +2,7 @@
 
 
 #include "SExplosiveBarrel.h"
+#include "Components/StaticMeshComponent.h"
 
 #include "SCharacter.h"
 #include "PhysicsEngine/RadialForceComponent.h"
@@ -15,7 +16,6 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 	MeshComp->SetSimulatePhysics(true);
 	RootComponent = MeshComp;
 
-
 	ForceComp = CreateDefaultSubobject<URadialForceComponent>("ForceComp");
 	ForceComp->SetupAttachment(RootComponent);
 
@@ -23,7 +23,6 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 	ForceComp->bImpulseVelChange = true;
 	ForceComp->ImpulseStrength = 500.0f;
 	ForceComp->Radius = 1000.0f;
-	
 
 }
 

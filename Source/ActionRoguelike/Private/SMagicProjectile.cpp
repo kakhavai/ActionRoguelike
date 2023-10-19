@@ -75,11 +75,6 @@ void ASMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	}
 }
 
-void ASMagicProjectile::UnbindActorOverlap()
-{
-	SphereComp->OnComponentBeginOverlap.RemoveDynamic(this, &ASMagicProjectile::OnBeginOverlap);
-}
-
 
 void ASMagicProjectile::QuickDestroy()
 {
