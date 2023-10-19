@@ -132,8 +132,9 @@ void ASCharacter::TeleportAttack()
 void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth,
 	float Delta)
 {
-
 	GetMesh()->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
+
+	GetMesh()->SetScalarParameterValueOnMaterials("Delta", Delta);
 
 	
 	if(NewHealth <= 0.0f && Delta < 0.0f)

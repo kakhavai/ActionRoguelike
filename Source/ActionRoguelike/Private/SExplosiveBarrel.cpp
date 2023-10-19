@@ -27,12 +27,13 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 
 }
 
-void ASExplosiveBarrel::OnActorHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ASExplosiveBarrel::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	
 	Explode();
 	
-	UE_LOG(LogTemp, Log, TEXT("OnActorHit in Explosive Barrel"));
+	UE_LOG(LogTemp, Log, TEXT("OnActorOverlap in Explosive Barrel"));
 	UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s, at game time: %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
 
 
@@ -41,17 +42,27 @@ void ASExplosiveBarrel::OnActorHit(UPrimitiveComponent* OverlappedComponent, AAc
 	DrawDebugString(GetWorld(), SweepResult.ImpactPoint, CombinedString, nullptr, FColor::Green,2.0f, true);
 }
 
+void ASExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Explode();
+	
+	UE_LOG(LogTemp, Log, TEXT("OnActorHit in Explosive Barrel"));
+	UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s, at game time: %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
+}
+
 void ASExplosiveBarrel::PostInitializeComponents()
 {
 	// Don't forget to call parent function
 	Super::PostInitializeComponents();
-	MeshComp->OnComponentBeginOverlap.AddDynamic(this, &ASExplosiveBarrel::OnActorHit);
-
+	MeshComp->OnComponentBeginOverlap.AddDynamic(this, &ASExplosiveBarrel::OnActorOverlap);
+	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnActorHit);	
 }
 
 
 void ASExplosiveBarrel::Explode()
 {
+	
 	ForceComp->FireImpulse();
 }
 

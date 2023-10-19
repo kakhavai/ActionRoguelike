@@ -9,7 +9,7 @@
 
 ASTeleportProjectile::ASTeleportProjectile()
 {
-    SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ASTeleportProjectile::OnOverlapBegin);
+    //SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ASTeleportProjectile::OnBeginOverlap);
 }
 
 
@@ -47,10 +47,10 @@ void ASTeleportProjectile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 
 
-void ASTeleportProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ASTeleportProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ASCharacter* Player = Cast<ASCharacter>(OtherActor);
-	UE_LOG(LogTemp, Warning, TEXT("ASBlackholeProjectile::OnOverlapBegin!"));
+	UE_LOG(LogTemp, Warning, TEXT("ASBlackholeProjectile::OnBeginOverlap!"));
 
 	if(!Player)
 	{
@@ -61,7 +61,7 @@ void ASTeleportProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, A
 
 void ASTeleportProjectile::TeleportAndDestroy()
 {
-	UE_LOG(LogTemp, Log, TEXT("ASBlackholeProjectile::TeleportPlayer instantiated"));
+	UE_LOG(LogTemp, Log, TEXT("ASTeleportProjectile::TeleportPlayer instantiated"));
 	ASCharacter* Player = Cast<ASCharacter>(GetInstigator());
 	bool checkPorted = Player->TeleportTo(TeleportLocation, Player->GetCameraComp()->GetComponentRotation());
 	if(!checkPorted)
