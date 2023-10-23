@@ -11,5 +11,5 @@ ActionRoguelike is a fast-paced run-and-gun shooter game developed in Unreal Eng
 
 ### Prerequisites
 
-- Unreal Engine 5
+- Unreal Engine 5.3.1
 - Jetbrains or Visual Studio
