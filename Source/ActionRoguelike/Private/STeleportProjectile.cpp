@@ -68,5 +68,5 @@ void ASTeleportProjectile::TeleportAndDestroy()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ASBlackholeProjectile::TeleportAndDestroy Failed to find safe landing!"));
 	}
-	this->Destroy();
+	this->QuickDestroy();
 }
